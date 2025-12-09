@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+        
+        <div class="card-header bg-white border-bottom-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-dark">Edit Patient Details</h5>
+            <a href="{% url 'patients:patient_list' %}" class="text-muted text-decoration-none fs-5">&times;</a>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Full Name</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Age</label>
+                        {{ form.age }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Email</label>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Last Menstrual Period (LMP)</label>
+                        {{ form.lmp }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted mb-1">Blood Type</label>
+                        {{ form.blood_type }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted mb-1">Risk Level</label>
+                        {{ form.risk_level }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label small text-muted mb-1">Primary Reason</label>
+                    {{ form.primary_reason }}
+                </div>
+
+                <div class="emergency-section p-3 mb-4 rounded-3" style="background-color: #FFF1F2; border: 1px solid #FECDD3;">
+                    <h6 class="emergency-title mb-3" style="color: #881337; font-weight: 700; font-size: 0.8rem;">
+                        <i class="fas fa-heartbeat me-2"></i> EMERGENCY CONTACT
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label small text-danger fw-bold">Contact Name</label>
+                            {{ form.emergency_contact_name }}
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label small text-danger fw-bold">Relationship</label>
+                            {{ form.emergency_contact_relation }}
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label small text-danger fw-bold">Phone Number</label>
+                            {{ form.emergency_contact_phone }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label small text-muted">Medical Notes / History</label>
+                    {{ form.medical_history }}
+                </div>
+
+                <div class="d-flex gap-2 border-top pt-3">
+                    <button type="submit" class="btn text-white px-4" style="background-color: #E11D48; border: none;">
+                        <i class="fas fa-save me-2"></i>Update Patient
+                    </button>
+                    <a href="{% url 'patients:patient_list' %}" class="btn btn-light text-muted px-4 border">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Ensure you have these styles in your CSS file or included here -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="main-content-container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-content">
+            <h5 class="mb-0 fw-bold text-dark">Add New Appointment</h5>
+            <p class="text-muted">Schedule a new visit for a patient</p>
+        </div>
+        <div class="header-actions">
+            <!-- Changed link to go back to list instead of current page -->
+            <a href="{% url 'patients:appointment_list' %}" class="btn text-nowrap text-decoration-none" style="background-color: #E11D48; color: white;">
+                <i class="fas fa-arrow-left"></i> Back to Appointments
+            </a>
+        </div>
+    </div>
+            
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="POST" action="." class="appointment-form">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+                
+                <!-- Row 1 -->
+                <div class="form-group full-width">
+                    <label class="form-label" for="patient">Select Patient</label>
+                    <select name="patient" id="patient" class="form-control" required>
+                        <option value="" disabled selected>-- Select Patient --</option>
+                        {% for patient in patients %}
+                            <option value="{{ patient.id }}">{{ patient.full_name }}</option>
+                        {% empty %}
+                            <option value="" disabled>No patients found</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-group">
+                    <label class="form-label">Purpose / Title</label>
+                    <input type="text" name="purpose" class="form-control" placeholder="e.g., Monthly Checkup" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Attending Doctor</label>
+                    <input type="text" name="doctor" class="form-control" placeholder="Doctor Name" required>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Time</label>
+                    <input type="time" name="time" class="form-control" required>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="form-group full-width">
+                    <label class="form-label">Clinical Notes</label>
+                    <textarea name="notes" class="form-control" rows="4" placeholder="Instructions or notes (Optional)"></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn text-white px-4" style="background-color: #E11D48; border: none;">Save Appointment</button>
+                <a href="{% url 'patients:appointment_list' %}" class="btn btn-light text-muted px-4 border">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

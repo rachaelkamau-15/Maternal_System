@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Load Fonts and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+
+<div class="main-payment-wrapper">
+    
+    <!-- 1. Top White Header Bar -->
+    <header class="top-bar">
+        <h1 class="page-title">Payments</h1>
+        <div class="user-profile">
+            <div class="user-details">
+                <span class="user-name">Admin User</span>
+                <span class="user-role">Admin</span>
+            </div>
+            <div class="user-avatar">A</div>
+        </div>
+    </header>
+
+    <!-- 2. Main Content Area -->
+    <div class="content-area">
+        
+        <!-- Section Title with Wallet Icon -->
+        <div class="section-header">
+            <div class="icon-box">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <div class="header-titles">
+                <h2>Billing & Payments</h2>
+                <p>Process payments via M-Pesa</p>
+            </div>
+        </div>
+
+        <!-- 3. TOP SECTION: Payment Form -->
+        <div class="payment-form-section">
+            <div class="white-card">
+                <h4>Initiate STK Push <span class="mpesa-logo">M-PESA</span></h4>
+                
+                <form method="POST" action="{% url 'patients:initiate_stk_push' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label>Select Patient</label>
+                        <div class="input-wrapper">
+                            <select name="patient_id" id="patient" required>
+                                <option value="" disabled selected>-- Choose Patient --</option>
+                                {% for patient in patients %}
+                                    <option value="{{ patient.id }}">{{ patient.full_name }}</option>
+                                {% empty %}
+                                    <option disabled>No patients found</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (KES)</label>
+                        <div class="input-wrapper">
+                            <select name="amount" id="amount-select" required>
+                                <option value="500" selected>500 (Consultation)</option>
+                                <option value="1500">1500 (Full Checkup)</option>
+                                <option value="3000">3000 (Lab Tests)</option>
+                                <option value="other">Other Amount</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Charge KES 500
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 4. BOTTOM SECTION: Transactions (Moved Down) -->
+        <!-- Added margin-top to separate it from the form above -->
+        <div class="transactions-section" style="margin-top: 2rem;">
+            <div class="white-card">
+                <h3 class="section-label">Recent Transactions</h3>
+                
+                <div>
+                    {% if transactions %}
+                        <table class="txn-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="t-left">Patient</th>
+                                    <th class="t-left">Date</th>
+                                    <th class="t-right">Amount</th>
+                                    <th class="t-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for txn in transactions %}
+                                <tr>
+                                    <td>{{ txn.patient.full_name }}</td>
+                                    <td class="text-muted">{{ txn.created_at|date:"M d, H:i" }}</td>
+                                    <td class="t-right">KES {{ txn.amount }}</td>
+                                    <td class="t-center">
+                                        <span class="badge {{ txn.status|lower }}">{{ txn.status }}</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <!-- Empty State Box -->
+                        <div class="empty-state-box">
+                            <p>No transactions yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Script to update button text
+    document.addEventListener('DOMContentLoaded', function() {
+        const amountSelect = document.getElementById('amount-select');
+        const submitBtn = document.querySelector('.btn-submit');
+        if(amountSelect && submitBtn) {
+            amountSelect.addEventListener('change', function() {
+                const val = this.value;
+                submitBtn.textContent = (val === 'other') ? 'Charge Amount' : `Charge KES ${val}`;
+            });
+        }
+    });
+</script>
+{% endblock %}

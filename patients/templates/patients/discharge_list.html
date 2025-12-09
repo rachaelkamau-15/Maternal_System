@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-header">
+    <div class="header-title">
+        <h1>Discharges</h1>
+        <span class="sub-header">Manage patient discharge records</span>
+    </div>
+    
+    <div class="d-flex gap-3"> 
+        <form method="GET" action="" class="w-100">
+            <input 
+                type="text" 
+                name="q" 
+                class="form-control w-100" 
+                placeholder="Search discharge records..."
+                value="{{ request.GET.q|default:'' }}"
+            >
+        </form>
+        
+        {# --- Button links to add_discharge URL --- #}
+        <a href="{% url 'patients:add_discharge' %}" class="btn text-nowrap text-decoration-none" style="background-color: #0f172a; color: white;">
+            + Process Discharge
+        </a>
+    </div>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Patient Info</th>
+                <th>Admission</th>
+                <th>Discharge</th>
+                <th>Condition</th>
+                <th>Discharged By</th> 
+                <th>Summary</th>
+                <th>Medications</th>
+                <th>Bill Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for discharge in discharges %}
+            <tr>
+                <!-- Patient Info -->
+                <td>
+                    <div class="cell-stacked">
+                        <span class="primary-text fw-bold">{{ discharge.patient.full_name }}</span>
+                        <span class="sub-text text-muted" style="font-size: 0.85rem;">{{ discharge.patient.phone }}</span>
+                    </div>
+                </td>
+                
+                <!-- Admission Date -->
+                <td>
+                    <span class="simple-text text-muted">
+                        {{ discharge.admission_date|date:"M d"|default:"-" }}
+                    </span>
+                </td>
+
+                <!-- Discharge Date -->
+                <td>
+                    <span class="simple-text fw-bold text-dark">
+                        {{ discharge.discharge_date|date:"M d, Y" }}
+                    </span>
+                </td>
+
+                <!-- Discharge Condition -->
+                <td>
+                    {% if discharge.condition == "Good" or discharge.condition == "Recovered" %}
+                        <span class="badge bg-success bg-opacity-10 text-success">{{ discharge.condition }}</span>
+                    {% elif discharge.condition == "Fair" %}
+                        <span class="badge bg-warning bg-opacity-10 text-warning">{{ discharge.condition }}</span>
+                    {% elif discharge.condition == "Critical" or discharge.condition == "Deceased" %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger">{{ discharge.condition }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary">{{ discharge.condition }}</span>
+                    {% endif %}
+                </td>
+                
+                <!-- Discharged By -->
+                 <td><small>{{ discharge.discharged_by|default:"-" }}</small></td>
+
+                <!-- NEW: Summary (Truncated) -->
+                <td style="max-width: 150px;">
+                    <span class="text-muted small" title="{{ discharge.notes }}" style="cursor: help;">
+                        {{ discharge.notes|default:"-"|truncatewords:5 }}
+                    </span>
+                </td>
+
+                <!-- NEW: Medications (Truncated) -->
+                <td style="max-width: 150px;">
+                    <span class="text-muted small" title="{{ discharge.medications }}" style="cursor: help;">
+                        {{ discharge.medications|default:"-"|truncatewords:5 }}
+                    </span>
+                </td>
+
+                <!-- Bill Status (Updated to match your Model) -->
+                <td>
+                    {% if discharge.billing_status == 'Cleared' %}
+                        <span class="badge border border-success text-success">Cleared</span>
+                    {% elif discharge.billing_status == 'Insurance Pending' %}
+                        <span class="badge border border-info text-info">Insurance</span>
+                    {% else %}
+                        <span class="badge border border-warning text-warning">Pending</span>
+                    {% endif %}
+                </td>
+
+                <!-- Actions -->
+                <td>
+                    <div class="action-icons">
+                        <a href="{% url 'patients:edit_discharge' discharge.id %}" title="Edit">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <a href="{% url 'patients:delete_discharge' discharge.id %}" title="Delete" class="delete-icon"  onclick="return confirm('Are you sure you want to delete this patient record?');">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" class="text-center py-4 text-muted">
+                    {% if request.GET.q %}
+                        No discharge records found matching "{{ request.GET.q }}".
+                    {% else %}
+                        No discharge records added yet.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

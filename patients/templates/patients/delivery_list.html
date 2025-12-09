@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-header">
+     <div class="d-flex align-items-center gap-3">
+                    <div class="icon-box icon-pink" style="width: 48px; height: 48px; border-radius: 12px; font-size: 1.5rem;">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark">Delivery Room</h5>
+                        <p class="text-muted mb-0 small">Record and manage births</p>
+                    </div>
+                </div>
+    
+    <div class="d-flex gap-3"> 
+       <form method="GET" action="" class="d-none d-md-block">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" name="q" class="form-control bg-light border-start-0" placeholder="Search..." value="{{ request.GET.q|default:'' }}">
+                        </div>
+                    </form>
+        
+        <a href="{% url 'patients:add_delivery' %}" class="btn text-white px-4 py-2" style="background-color: #0F172A; font-weight: 500;">
+                        <i class="fas fa-plus me-2"></i> Record Delivery
+                    </a>
+    </div>
+</div>
+
+        <!-- Table Area -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Delivery Date</th>
+                        <th>Type</th>
+                        <th>Baby</th>
+                        <th>Attending</th> 
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for delivery in deliveries %}
+                    <tr>
+                        <!-- Patient Info -->
+                        <td>
+                            <div class="cell-stacked">
+                                <span class="fw-semibold text-dark">{{ delivery.patient.full_name }}</span>
+                                <span class="small text-muted">{{ delivery.patient.phone }}</span>
+                            </div>
+                        </td>
+                        
+                        <!-- Delivery Date -->
+                        <td>
+                            <div class="cell-stacked">
+                                <span class="text-dark fw-medium">{{ delivery.delivery_date|date:"M d, Y" }}</span>
+                                <span class="small text-muted">{{ delivery.delivery_time|time:"H:i a"|default:"--:--" }}</span>
+                            </div>
+                        </td>
+
+                        <!-- Delivery Type -->
+                        <td>
+                            <span class="badge rounded-pill bg-light text-dark border fw-normal px-3">
+                                {{ delivery.delivery_type }}
+                            </span>
+                        </td>
+
+                        <!-- Baby Details (Matches previous Add/Edit form logic) -->
+                        <td>
+                            <div class="d-flex flex-column">
+                                <span class="fw-medium text-dark">
+                                    {% if delivery.baby_gender == 'Male' %}
+                                        <i class="fas fa-mars text-primary me-1"></i> Male
+                                    {% elif delivery.baby_gender == 'Female' %}
+                                        <i class="fas fa-venus text-danger me-1"></i> Female
+                                    {% else %}
+                                        {{ delivery.baby_gender|default:"-" }}
+                                    {% endif %}
+                                </span>
+                                <span class="small text-muted">
+                                    {{ delivery.baby_weight|default:"0" }} kg
+                                </span>
+                            </div>
+                        </td>
+
+                        <!-- Attending Physician -->
+                        <td>
+                            <span class="text-dark fw-medium">
+                                {% if delivery.attending_physician %}
+                                    Dr. {{ delivery.attending_physician }}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </span>
+                        </td>
+
+                        <!-- Notes -->
+                        <td>
+                            <span class="text-muted small text-truncate d-inline-block" style="max-width: 150px;">
+                                {{ delivery.notes|default:"-" }}
+                            </span>
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="action-icons">
+                                <a href="{% url 'patients:edit_delivery' delivery.id %}"  title="Edit">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                <a href="{% url 'patients:delete_delivery' delivery.id %}" class="delete-icon" onclick="return confirm('Are you sure you want to delete this patient record?');">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                           
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <!-- Empty State -->
+                    <tr>
+                        <td colspan="7" class="text-center py-5">
+                            <div class="py-4">
+                                <p class="text-muted mb-0 fs-5">No delivery records found.</p>
+                                {% if request.GET.q %}
+                                    <p class="small text-muted">Try adjusting your search criteria.</p>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination (Optional - if you have pagination enabled) -->
+        {% if is_paginated %}
+        <div class="card-footer bg-white border-top-0 py-3">
+            <div class="d-flex justify-content-center">
+                <!-- Add pagination links here if needed -->
+            </div>
+        </div>
+        {% endif %}
+    
+
+{% endblock %}

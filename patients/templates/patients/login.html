@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesis - Login</title>
+
+    <!-- 1. FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 2. Link to your CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+
+    <!-- Wrapper isn't strictly necessary with the body flexbox, but good for structure -->
+    <div class="login-wrapper"> 
+        <div class="login-card">
+            
+            <!-- Top Dark Section -->
+            <div class="login-header">
+                <div class="logo-box">
+                    <i class="fa-solid fa-stethoscope"></i>
+                </div>
+                <h2>Genesis</h2>
+                <p>Maternal Health Management System</p>
+            </div>
+
+            <!-- Bottom Form Section -->
+            <div class="login-body">
+                
+                <form method="POST" action="">
+                    {% csrf_token %}
+
+                    <!-- Error Handling -->
+                    {% if form.errors %}
+                        <div class="error-message">
+                            <i class="fa-solid fa-circle-exclamation"></i> Username or password is incorrect.
+                        </div>
+                    {% endif %}
+
+                    <!-- Username Field (UPDATED) -->
+                    <div class="input-group">
+                        <label>Username</label>
+                        <!-- CHANGED: type="text" allows you to type 'admin' -->
+                        <input type="text" name="username" placeholder="admin" required autofocus>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="••••••••" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-login">
+                        <i class="fa-solid fa-shield-halved"></i> Login to Portal
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

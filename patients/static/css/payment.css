@@ -1,0 +1,288 @@
+/* =========================================
+   1. RESET & BASIC SETUP
+   ========================================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main wrapper to handle full height */
+.main-payment-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* =========================================
+   2. TOP HEADER BAR
+   ========================================= */
+.top-bar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-details {
+    text-align: right;
+    line-height: 1.2;
+}
+
+.user-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #0f172a;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* =========================================
+   3. CONTENT AREA LAYOUT
+   ========================================= */
+.content-area {
+    padding: 30px;
+    max-width: 1000px; /* Constrain width for better readability since it's vertical now */
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Section Header (Wallet Icon) */
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    background-color: #dcfce7;
+    color: #16a34a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
+
+.header-titles h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.header-titles p {
+    color: #64748b;
+    margin: 2px 0 0 0;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   4. CARDS & SECTIONS
+   ========================================= */
+/* Matches HTML class 'white-card' */
+.white-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    width: 100%;
+}
+
+.white-card h4 {
+    margin: 0 0 20px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+.mpesa-logo {
+    color: #22c55e;
+    font-weight: 800;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   5. FORM STYLES
+   ========================================= */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-wrapper select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 0.95rem;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.2s;
+    height: 42px; /* Fixed height for consistency */
+}
+
+.input-wrapper select:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #16a34a;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #15803d;
+}
+
+/* =========================================
+   6. TABLE & TRANSACTIONS (The Fixes)
+   ========================================= */
+.txn-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Crucial: stops columns from jumping */
+}
+
+/* Column Widths (Matches HTML Classes) */
+.col-patient { width: 35%; }
+.col-date    { width: 25%; }
+.col-amount  { width: 20%; text-align: left; }
+.col-status  { width: 20%; text-align: center; }
+
+/* Table Header */
+.txn-table th {
+    text-align: left;
+    color: #6B7280;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 1px solid #E5E7EB;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Table Body */
+.txn-table td {
+    padding: 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid #F3F4F6;
+    font-size: 0.9rem;
+    color: #1F2937;
+}
+
+/* =========================================
+   7. STATUS BADGES
+   ========================================= */
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: inline-block;
+    line-height: 1.4;
+}
+
+/* Status Colors */
+.badge.success, 
+.badge.completed { 
+    background-color: #DEF7EC; 
+    color: #03543F; 
+}
+
+.badge.pending,
+.badge.processing { 
+    background-color: #FEF3C7; 
+    color: #92400E; 
+}
+
+.badge.failed, 
+.badge.cancelled { 
+    background-color: #FDE8E8; 
+    color: #9B1C1C; 
+}
+
+.badge.unknown {
+    background-color: #E5E7EB;
+    color: #374151;
+}
+
+/* Empty State */
+.empty-state-box {
+    border: 2px dashed #e2e8f0;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+    background-color: #f8fafc;
+}

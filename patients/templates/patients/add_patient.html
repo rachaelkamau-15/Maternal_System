@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+        
+        <div class="card-header bg-white border-bottom-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-dark">New Patient Registration</h5>
+            {# Ensure 'patients:patient_list' exists in your urls.py #}
+            <a href="{% url 'patients:patient_list' %}" class="text-muted text-decoration-none fs-5">&times;</a>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            <!-- POST to the same URL -->
+            <form method="POST" action="">
+                {% csrf_token %}
+
+                {# --- DISPLAY ALL FORM ERRORS --- #}
+                {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    <h6 class="alert-heading fw-bold">Registration Failed: Please correct the errors below.</h6>
+                    {% if form.non_field_errors %}
+                        <ul class="mb-0">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- ROW 1: NAME & AGE -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Full Name</label>
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}<div class="text-danger small mt-1">{{ form.full_name.errors }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Age</label>
+                        {{ form.age }}
+                        {% if form.age.errors %}<div class="text-danger small mt-1">{{ form.age.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- ROW 2: CONTACT INFO -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Phone Number</label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}<div class="text-danger small mt-1">{{ form.phone.errors }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- ROW 3: PREGNANCY DATES (LMP & EDD) -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Last Menstrual Period (LMP)</label>
+                        {{ form.lmp }}
+                        {% if form.lmp.errors %}<div class="text-danger small mt-1">{{ form.lmp.errors }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Expected Due Date (EDD)</label>
+                        {{ form.expected_due_date }} <!-- This matches the field name in forms.py -->
+                        <div class="form-text text-muted" style="font-size: 0.75rem;">
+                            Auto-calculated (LMP + 280 days). Update manually if ultrasound differs.
+                        </div>
+                        {% if form.expected_due_date.errors %}<div class="text-danger small mt-1">{{ form.expected_due_date.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- ROW 4: MEDICAL STATS -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Blood Type</label>
+                        {{ form.blood_type }}
+                        {% if form.blood_type.errors %}<div class="text-danger small mt-1">{{ form.blood_type.errors }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted mb-1">Risk Level</label>
+                        {{ form.risk_level }}
+                        {% if form.risk_level.errors %}<div class="text-danger small mt-1">{{ form.risk_level.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- ROW 5: PRIMARY REASON -->
+                <div class="mb-4">
+                    <label class="form-label small text-muted mb-1">Primary Reason for Visit</label>
+                    {{ form.primary_reason }}
+                    {% if form.primary_reason.errors %}<div class="text-danger small mt-1">{{ form.primary_reason.errors }}</div>{% endif %}
+                </div>
+
+                <!-- EMERGENCY SECTION (PINK) -->
+                <div class="emergency-section p-3 mb-4 rounded-3" style="background-color: #FFF1F2; border: 1px solid #FECDD3;">
+                    <h6 class="emergency-title mb-3" style="color: #881337; font-weight: 700; font-size: 0.8rem;">
+                        <i class="fas fa-heartbeat me-2"></i> EMERGENCY CONTACT
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label small text-danger fw-bold">Contact Name</label>
+                            {{ form.emergency_contact_name }}
+                            {% if form.emergency_contact_name.errors %}<div class="text-danger small mt-1">{{ form.emergency_contact_name.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label small text-danger fw-bold">Relationship</label>
+                            {{ form.emergency_contact_relation }}
+                            {% if form.emergency_contact_relation.errors %}<div class="text-danger small mt-1">{{ form.emergency_contact_relation.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label small text-danger fw-bold">Phone Number</label>
+                            {{ form.emergency_contact_phone }}
+                            {% if form.emergency_contact_phone.errors %}<div class="text-danger small mt-1">{{ form.emergency_contact_phone.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDICAL NOTES -->
+                <div class="mb-4">
+                    <label class="form-label small text-muted">Medical Notes / History</label>
+                    {{ form.medical_history }}
+                    {% if form.medical_history.errors %}<div class="text-danger small mt-1">{{ form.medical_history.errors }}</div>{% endif %}
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="d-flex gap-2 border-top pt-3">
+                    <button type="submit" class="btn text-white px-4" style="background-color: #E11D48; border: none;">
+                        <i class="fas fa-save me-2"></i>Register Patient
+                    </button>
+                    
+                    <a href="{% url 'patients:patient_list' %}" class="btn btn-light text-muted px-4 border">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JAVASCRIPT: Auto-Calculate EDD -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // These IDs must match the 'id' attrs set in forms.py
+        const lmpInput = document.getElementById('id_lmp');
+        const eddInput = document.getElementById('id_edd');
+
+        // If your forms.py didn't set 'id_edd', Django usually defaults to 'id_expected_due_date'
+        // Fallback selector just in case:
+        const targetEdd = eddInput || document.getElementById('id_expected_due_date');
+
+        if (lmpInput && targetEdd) {
+            lmpInput.addEventListener('change', function() {
+                const lmpValue = this.value;
+                
+                if (lmpValue) {
+                    const lmpDate = new Date(lmpValue);
+                    
+                    // Add 280 days (40 weeks)
+                    const eddDate = new Date(lmpDate);
+                    eddDate.setDate(lmpDate.getDate() + 280);
+
+                    // Format YYYY-MM-DD
+                    const year = eddDate.getFullYear();
+                    const month = String(eddDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(eddDate.getDate()).padStart(2, '0');
+                    
+                    const formattedEDD = `${year}-${month}-${day}`;
+
+                    // Set value
+                    targetEdd.value = formattedEDD;
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

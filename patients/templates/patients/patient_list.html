@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-header">
+    <div class="header-title">
+        <h1>Patients</h1>
+        <span class="sub-header">Manage your patient records</span>
+    </div>
+    
+    <div class="d-flex gap-3"> 
+        <form method="GET" action="" class="w-100">
+            <input 
+                type="text" 
+                name="q" 
+                class="form-control w-100" 
+                placeholder="Search patients..."
+                value="{{ request.GET.q|default:'' }}"
+            >
+        </form>
+        
+        <a href="{% url 'patients:add_patient' %}" class="btn text-nowrap text-decoration-none" style="background-color: #0f172a; color: white;">
+            + Register Patient
+        </a>
+    </div>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Patient Info</th>
+                <th>Age</th>
+                <th>Blood Group</th>
+                <th>Emergency Contact</th>
+                <th>Pregnancy Details (LMP)</th>
+                <th>EDD</th>
+                <th>Risk Level</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <!-- 1. Patient Info -->
+                <td>
+                    <div class="cell-stacked">
+                        <span class="primary-text">{{ patient.full_name }}</span>
+                        <span class="sub-text">{{ patient.phone }}</span>
+                    </div>
+                </td>
+                
+                <!-- 2. Age -->
+                <td>
+                    <span class="simple-text">{{ patient.age }} Years</span>
+                </td>
+
+                <!-- 3. Blood Group -->
+                <td>
+                    <span class="simple-text fw-bold">
+                        {{ patient.blood_type|default:"-" }}
+                    </span>
+                </td>
+
+                <!-- 4. Emergency Contact -->
+                <td>
+                    <div class="cell-stacked">
+                        <span class="primary-text">
+                            {{ patient.emergency_contact_name|default:"-" }}
+                        </span>
+                        
+                        <span class="sub-text">
+                            {{ patient.emergency_contact_relation|default:"Relation" }} 
+                            &nbsp;&bull;&nbsp; 
+                            <i class="fa-solid fa-phone" style="font-size: 0.9em;"></i> 
+                            {{ patient.emergency_contact_phone|default:"-" }}
+                        </span>
+                    </div>
+                </td>
+
+                <!-- 5. LMP -->
+                <td>
+                    <div class="stage-badge">
+                        <span class="week">LMP</span>
+                        <!-- Added date filter for nice formatting -->
+                        <span class="trim">{{ patient.lmp|date:"M d, Y" }}</span>
+                    </div>
+                </td>
+
+                <!-- 6. EDD (THE FIX) -->
+                <td class="edd-text">
+                    {% if patient.expected_due_date %}
+                        <!-- Changed patient.edd to patient.expected_due_date -->
+                        <span style="font-weight: 600; color: #0F172A;">
+                            {{ patient.expected_due_date|date:"M d, Y" }}
+                        </span>
+                    {% else %}
+                        <span class="text-muted small">--</span>
+                    {% endif %}
+                </td>
+
+                <!-- 7. Risk Level -->
+                <td>
+                    {% if "High" in patient.risk_level %}
+                        <span class="badge risk-high">{{ patient.risk_level }}</span>
+                    
+                    {% elif "Normal" in patient.risk_level %}
+                        <span class="badge risk-normal">{{ patient.risk_level }}</span>
+                    
+                    {% elif "Low" in patient.risk_level %}
+                        <span class="badge risk-low">{{ patient.risk_level }}</span>
+                    
+                    {% else %}
+                        <span class="badge risk-medium">{{ patient.risk_level }}</span>
+                    {% endif %}
+                </td>
+
+                <!-- 8. Actions -->
+                <td>
+                    <div class="action-icons">
+                        <a href="{% url 'patients:edit_patient' patient.id %}" title="Edit">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <!-- Added confirmation for delete -->
+                        <a href="{% url 'patients:delete_patient' patient.id %}" title="Delete" class="delete-icon" onclick="return confirm('Are you sure you want to delete this patient record?');">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align:center; padding: 20px;">
+                    {% if request.GET.q %}
+                        No patients found matching "{{ request.GET.q }}".
+                    {% else %}
+                        No patients registered yet.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-content-container p-4">
+
+    <!-- White Card Container -->
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-4">
+            
+            <!-- Header Section (Updated with Bootstrap Flexbox) -->
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                <div>
+                    <h5 class="mb-1 fw-bold text-dark">Edit Delivery Record</h5>
+                    <p class="text-muted mb-0 small">Update details for <strong>{{ form.instance.patient }}</strong></p>
+                </div>
+                <a href="#" onclick="history.back()" class="text-muted text-decoration-none">
+                    <i class="fas fa-times fa-lg"></i>
+                </a>
+            </div>
+
+            <!-- Form -->
+            <form method="POST" action=".">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <!-- Row 1: Mother -->
+                <div class="mb-3">
+                    <label class="form-label">Mother</label>
+                    {{ form.patient }}
+                    <div class="text-danger small">{{ form.patient.errors }}</div>
+                </div>
+
+                <!-- Row 2: Date and Time -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Date of Delivery</label>
+                        {{ form.delivery_date }}
+                        <div class="text-danger small">{{ form.delivery_date.errors }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Time of Delivery</label>
+                        {{ form.delivery_time }}
+                        <div class="text-danger small">{{ form.delivery_time.errors }}</div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Method and Physician -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Delivery Method</label>
+                        {{ form.delivery_type }}
+                        <div class="text-danger small">{{ form.delivery_type.errors }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Attending Physician/Midwife</label>
+                        {{ form.attending_physician }}
+                        <div class="text-danger small">{{ form.attending_physician.errors }}</div>
+                    </div>
+                </div>
+
+                <!-- Row 4: Blood Group & Emergency -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Blood Group</label>
+                        {{ form.blood_group }}
+                        <div class="text-danger small">{{ form.blood_group.errors }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Emergency Contact</label>
+                        {{ form.emergency_contact }} 
+                        <div class="text-danger small">{{ form.emergency_contact.errors }}</div>
+                    </div>
+                </div>
+
+                <!-- Row 5: Baby Details (Pink Section) -->
+                 <div class="baby-section p-3 mb-4 rounded-3" style="background-color: #FFF1F2; border: 1px solid #FECDD3;">
+                    <h6 class="baby-details-title mb-3" style="color: #881337; font-weight: 700; font-size: 0.8rem;">
+                        <i class="fas fa-baby me-2"></i> Baby Details
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Gender</label>
+                            {{ form.baby_gender }}
+                            <div class="text-danger small">{{ form.baby_gender.errors }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Weight (kg)</label>
+                            {{ form.baby_weight }}
+                            <div class="text-danger small">{{ form.baby_weight.errors }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 6: Notes -->
+                <div class="mb-4">
+                    <label class="form-label">Complications / Notes</label>
+                    {{ form.notes }}
+                    <div class="text-danger small">{{ form.notes.errors }}</div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn text-white px-4" style="background-color: #E11D48; border: none;">
+                        <i class="fas fa-save me-2"></i> Update Record
+                    </button>
+                    <button type="button" class="btn btn-light border px-4" onclick="history.back()">Cancel</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

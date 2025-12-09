@@ -1,0 +1,159 @@
+/* General Page Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f1f5f9; /* Light grey/blue background */
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Container for the Login Card --- */
+.login-card {
+    /* THIS IS THE PART THAT CONTROLS THE WIDTH */
+    width: 95%;                /* Takes up most of the screen width */
+    max-width: 800px;          /* UPDATED: Increased to 800px. Change this to 1000px for even wider */
+    
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden; 
+}
+
+/* --- The Dark Blue Header --- */
+.login-header {
+    background-color: #0f172a; /* Dark Navy */
+    color: white;
+    padding: 60px 100px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The Pink Logo Box */
+.logo-box {
+    background-color: #f43f5e; /* Pink/Red color */
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: white;
+}
+
+.login-header h2 {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.login-header p {
+    color: #94a3b8; /* Light grey text */
+    font-size: 0.9rem;
+}
+
+/* --- Form Body --- */
+.login-body {
+    padding: 40px; /* Increased padding slightly for the wider look */
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #334155;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+/* Dark Input Fields style from image */
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    background-color: #3e3e3e; /* Dark grey input bg */
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    color: #fff; /* White text when typing */
+    font-size: 1rem;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: #9ca3af;
+}
+
+.input-group input:focus {
+    border-color: #f43f5e; /* Pink border on focus */
+}
+
+/* --- Login Button --- */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #0f172a; /* Dark Navy */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    transition: background 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #1e293b;
+}
+
+/* --- Footer Link --- */
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-footer a {
+    color: #64748b;
+    text-decoration: underline;
+    font-size: 0.85rem;
+}
+
+/* Error Message Style */
+.error-message {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Success Message Alert */
+.alert-success {
+    background-color: #d1fae5; /* Light green background */
+    color: #065f46;            /* Dark green text */
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #34d399;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="dashboard-container">
+    
+    <main class="main-content">
+        
+        <!-- Header -->
+        <header class="top-bar">
+            <h1>Dashboard</h1>
+            <div class="user-profile">
+                <div class="user-info">
+                    <span class="name">{{ request.user.username|default:"Admin User" }}</span>
+                    <span class="role">Administrator</span>
+                </div>
+                <div class="avatar">
+                    {{ request.user.username|slice:":1"|upper }}
+                </div>
+            </div>
+        </header>
+
+        <!-- Top Stats Cards (Grid of 6) -->
+        <div class="stats-grid">
+            
+            <!-- 1. Total Patients -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="icon-box icon-blue">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+                    <!-- Example Trend Logic -->
+                </div>
+                <h3 class="stat-value">{{ total_patients|default:"0" }}</h3>
+                <span class="stat-label">Total Active Patients</span>
+            </div>
+
+            <!-- 2. Appointments -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="icon-box icon-purple">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+                </div>
+                <h3 class="stat-value">{{ upcoming_appointments|default:"0" }}</h3>
+                <span class="stat-label">Appointments Scheduled</span>
+            </div>
+
+            <!-- 3. High Risk Cases -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="icon-box icon-red">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <span class="trend-badge trend-red">Critical</span>
+                </div>
+                <h3 class="stat-value">{{ high_risk_patients|default:"0" }}</h3>
+                <span class="stat-label">High Risk Cases</span>
+            </div>
+
+            <!-- 4. Total Deliveries -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="icon-box icon-pink">
+                        <i class="fa-solid fa-baby"></i>
+                    </div>
+                </div>
+                <h3 class="stat-value">{{ total_deliveries|default:"0" }}</h3>
+                <span class="stat-label">Total Deliveries</span>
+            </div>
+
+            <!-- 5. Total Discharges -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="icon-box icon-teal">
+                        <i class="fa-solid fa-door-open"></i>
+                    </div>
+                </div>
+                <h3 class="stat-value">{{ total_discharges|default:"0" }}</h3>
+                <span class="stat-label">Total Discharges</span>
+            </div>
+
+            <!-- 6. Revenue -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="icon-box icon-green">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+                </div>
+                <h3 class="stat-value">KES {{ revenue_this_month|default:"0" }}</h3>
+                <span class="stat-label">Revenue This Month</span>
+            </div>
+
+        </div>
+
+        <!-- Bottom Section: Distribution & Urgent Alert -->
+        <div class="bottom-section">
+            
+           <!-- Patient Distribution (By Trimester) -->
+            <div class="white-card">
+                <h4>Patient Distribution (By Trimester)</h4>
+
+                <!-- First Trimester -> USE BLUE BAR -->
+                <div class="progress-item">
+                    <div class="progress-labels">
+                        <span>First Trimester (Weeks 1-12)</span>
+                        <span>{{ first_trimester|default:"0" }} Patients</span>
+                    </div>
+                    <div class="progress-bg">
+                        <!-- Changed class from 'bar-default' to 'bar-blue' -->
+                        <div class="progress-bar bar-blue" style="width: {{ first_trimester_percent|default:'0' }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Second Trimester -> USE YELLOW BAR -->
+                <div class="progress-item">
+                    <div class="progress-labels">
+                        <span>Second Trimester (Weeks 13-27)</span>
+                        <span>{{ second_trimester|default:"0" }} Patients</span>
+                    </div>
+                    <div class="progress-bg">
+                        <!-- Changed class from 'bar-default' to 'bar-yellow' -->
+                        <div class="progress-bar bar-yellow" style="width: {{ second_trimester_percent|default:'0' }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Third Trimester -> KEEPS RED BAR -->
+                <div class="progress-item">
+                    <div class="progress-labels">
+                        <span>Third Trimester (Weeks 28-40)</span>
+                        <span>{{ third_trimester|default:"0" }} Patients</span>
+                    </div>
+                    <div class="progress-bg">
+                        <div class="progress-bar bar-red" style="width: {{ third_trimester_percent|default:'0' }}%"></div>
+                    </div>
+                </div>
+            </div>
+
+           <!-- Urgent Attention Needed -->
+            <div class="white-card">
+                <h4>Urgent Attention Needed</h4>
+                
+                <div class="alert-box">
+                    <div class="alert-icon">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div class="alert-content">
+                        {% if urgent_patient %}
+                            <!-- CASE 1: Found a High Risk Patient -->
+                            <strong>{{ urgent_patient.full_name }}</strong>
+                            <p style="margin-top:4px;">
+                                <span class="badge risk-high">High Risk</span><br>
+                                Expected Due Date: {{ urgent_patient.expected_due_date|date:"M d, Y" }}
+                            </p>
+                            <p style="font-size: 0.8rem; margin-top: 5px; color: #B91C1C;">
+                                <strong>Status:</strong> Requires immediate follow-up.
+                            </p>
+
+                        {% elif missed_appointments > 0 %}
+                            <!-- CASE 2: No High Risk, but Missed Appointments exist -->
+                            <strong>Missed Appointments</strong>
+                            <p>
+                                You have <strong>{{ missed_appointments }}</strong> visits marked as "Scheduled" that are past due.
+                            </p>
+                            <p style="font-size: 0.8rem; margin-top: 5px;">
+                                <a href="{% url 'patients:appointment_list' %}?q=Scheduled" style="color:#B91C1C; text-decoration:underline;">View Appointments</a>
+                            </p>
+
+                        {% else %}
+                            <!-- CASE 3: No issues found -->
+                            <strong style="color: #047857;">All Clear</strong>
+                            <p style="color: #065f46;">
+                                No high-risk alerts or missed appointments at this time.
+                            </p>
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+{% endblock %}

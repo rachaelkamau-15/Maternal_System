@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Ensure your style.css is loaded -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="main-content-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-content">
+            <h5 class="mb-0 fw-bold text-dark">Discharge Processing</h5>
+            <p class="text-muted">Manage patient release and summaries</p>
+        </div>
+        <div class="header-actions">
+            <a href="#" class="btn text-nowrap text-decoration-none" style="background-color: #E11D48; color: white;" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="POST" action=".">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+                
+                <!-- Patient -->
+                <div class="form-group full-width">
+                    <label class="form-label" for="{{ form.patient.id_for_label }}">Patient</label>
+                    {{ form.patient }}
+                    {{ form.patient.errors }}
+                </div>
+
+                <!-- Admission Date -->
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.admission_date.id_for_label }}">Admission Date</label>
+                    {{ form.admission_date }}
+                    {{ form.admission_date.errors }}
+                </div>
+
+                <!-- Discharge Date -->
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.discharge_date.id_for_label }}">Discharge Date</label>
+                    {{ form.discharge_date }}
+                    {{ form.discharge_date.errors }}
+                </div>
+
+                <!-- Condition -->
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.condition.id_for_label }}">Condition on Discharge</label>
+                    {{ form.condition }}
+                    {{ form.condition.errors }}
+                </div>
+
+                <!-- NEW: Billing Status -->
+                <div class="form-group">
+                    <label class="form-label" for="{{ form.billing_status.id_for_label }}">Billing Status</label>
+                    {{ form.billing_status }}
+                    {{ form.billing_status.errors }}
+                </div>
+
+                <!-- Discharged By (Manual Input) -->
+                <div class="form-group">
+                    <label class="form-label">Discharged By</label>
+                    <input type="text" 
+                           name="discharged_by" 
+                           class="form-control" 
+                           placeholder="Enter name"
+                           value="{{ form.instance.discharged_by|default:'' }}">
+                </div>
+
+                <!-- Notes -->
+                <div class="form-group full-width">
+                    <label class="form-label" for="{{ form.notes.id_for_label }}">Discharge Summary / Condition</label>
+                    {{ form.notes }}
+                    {{ form.notes.errors }}
+                </div>
+
+                <!-- NEW: Medications / Prescriptions -->
+                <div class="form-group full-width">
+                    <label class="form-label" for="{{ form.medications.id_for_label }}">Medications / Prescriptions</label>
+                    {{ form.medications }}
+                    {{ form.medications.errors }}
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn text-white px-4" style="background-color: #E11D48; border: none;">Finalize Discharge</button>
+                <button type="button" class="btn btn-light text-muted px-4 border" onclick="history.back()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

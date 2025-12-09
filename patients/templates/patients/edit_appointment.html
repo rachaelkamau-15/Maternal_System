@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Using the same CSS file as add_appointment for consistent styling -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="main-content-container">
+    
+    <!-- Page Header (Matched structure to Add Page) -->
+    <div class="page-header">
+        <div class="header-content">
+            <h5 class="mb-0 fw-bold text-dark">Edit Appointment</h5>
+            <p class="text-muted">Update visit details for <strong>{{ appointment.patient.full_name }}</strong></p>
+        </div>
+        <div class="header-actions">
+            <!-- Back button consistent with Add page -->
+            <a href="{% url 'patients:appointment_list' %}"  class="btn text-nowrap text-decoration-none" style="background-color: #E11D48; color: white;">
+                <i class="fas fa-arrow-left"></i> Back to Appointments
+            </a>
+        </div>
+    </div>
+            
+    <!-- Form Container (Added this wrapper to match Add Page) -->
+    <div class="form-container">
+        <form method="POST" action="." class="appointment-form">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+                
+                <!-- Row 1 -->
+                <div class="form-group full-width">
+                    <label class="form-label" for="patient">Select Patient</label>
+                    <select name="patient" id="patient" class="form-control" required>
+                        <option value="" disabled>-- Select Patient --</option>
+                        {% for patient in patients %}
+                            <option value="{{ patient.id }}" {% if patient.id == appointment.patient.id %}selected{% endif %}>
+                                {{ patient.full_name }}
+                            </option>
+                        {% empty %}
+                            <!-- Fallback if list is empty but appointment exists -->
+                            <option value="{{ appointment.patient.id }}" selected>{{ appointment.patient.full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="form-group">
+                    <label class="form-label">Purpose / Title</label>
+                    <input type="text" name="purpose" class="form-control" 
+                           placeholder="e.g., Monthly Checkup" 
+                           value="{{ appointment.purpose }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Attending Doctor</label>
+                    <input type="text" name="doctor" class="form-control" 
+                           placeholder="Doctor Name" 
+                           value="{{ appointment.doctor }}" required>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <!-- Date filter ensures correct format for HTML date input -->
+                    <input type="date" name="date" class="form-control" 
+                           value="{{ appointment.date|date:'Y-m-d' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Time</label>
+                    <!-- Time filter ensures correct format for HTML time input -->
+                    <input type="time" name="time" class="form-control" 
+                           value="{{ appointment.time|time:'H:i' }}" required>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="form-group full-width">
+                    <label class="form-label">Clinical Notes</label>
+                    <textarea name="notes" class="form-control" rows="4" 
+                              placeholder="Instructions or notes (Optional)">{{ appointment.notes }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn text-white px-4" style="background-color: #E11D48; border: none;">Update Appointment</button>
+                <a href="{% url 'patients:appointment_list' %}" class="btn btn-light text-muted px-4 border">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
