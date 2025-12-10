@@ -1,0 +1,506 @@
+/* --- GENESIS THEME VARIABLES --- */
+:root {
+    /* Brand Colors from Image */
+    --primary-color: #F43F5E; /* The Genesis Red/Pink */
+    --primary-hover: #E11D48;
+    --sidebar-bg: #111827;    /* Dark Navy Sidebar */
+    --bg-body: #F3F4F6;       /* Light Gray Body */
+    --bg-card: #FFFFFF;       /* White Cards */
+    
+    /* Text Colors */
+    --text-dark: #1F2937;
+    --text-medium: #6B7280;
+    --text-light: #9CA3AF;
+    
+    /* Status Colors */
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --info: #3B82F6;
+
+    /* Spacing & Borders */
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', sans-serif; /* Clean Sans-serif */
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+}
+
+/* --- LAYOUT --- */
+/* Assuming base.html handles the sidebar, this styles the content area */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* --- HEADER --- */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background-color: transparent;
+}
+
+.top-bar h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-sm);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.user-info .name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.user-info .role {
+    font-size: 0.75rem;
+    color: var(--text-medium);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* --- STATS GRID --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-medium);
+}
+
+/* --- ICON BOXES --- */
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/* Icon Color Variants (Pastel Backgrounds) */
+.icon-blue   { background-color: #DBEAFE; color: #2563EB; }
+.icon-purple { background-color: #F3E8FF; color: #9333EA; }
+.icon-red    { background-color: #FEE2E2; color: #DC2626; }
+.icon-pink   { background-color: #FCE7F3; color: #DB2777; }
+.icon-teal   { background-color: #CCFBF1; color: #0D9488; }
+.icon-green  { background-color: #D1FAE5; color: #059669; }
+
+/* Trend Badges */
+.trend-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+.trend-red { background-color: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+/* --- BOTTOM SECTION --- */
+.bottom-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2/3 for Progress, 1/3 for Alerts */
+    gap: 1.5rem;
+}
+
+.white-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.white-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Progress Bars */
+.progress-item {
+    margin-bottom: 1.5rem;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.progress-bg {
+    height: 10px;
+    background-color: #F3F4F6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Progress Bar Colors */
+.bar-blue   { background-color: #3B82F6; }
+.bar-yellow { background-color: #F59E0B; }
+.bar-red    { background-color: #EF4444; }
+
+/* Alert Box */
+.alert-box {
+    display: flex;
+    gap: 1rem;
+    background-color: #FEF2F2; /* Light Red BG */
+    border: 1px solid #FECACA;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    color: #DC2626;
+    margin-top: 2px;
+}
+
+.alert-content strong {
+    color: #991B1B;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.alert-content p {
+    font-size: 0.9rem;
+    color: #7F1D1D;
+    line-height: 1.4;
+}
+
+.badge.risk-high {
+    background-color: #DC2626;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1024px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .bottom-section { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .stats-grid { grid-template-columns: 1fr; }
+}
+/*patient_list.css*/
+/* --- Page Layout & Typography --- */
+body {
+    background-color: #F8FAFC; /* Light slate background */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* --- Header Section --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-top: 10px;
+}
+
+.header-title h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0;
+}
+
+.sub-header {
+    color: #64748B;
+    font-size: 14px;
+}
+
+/* --- Search & Button --- */
+.search-input {
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: #64748B;
+    background-color: #fff;
+    min-width: 250px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #0F172A;
+}
+
+.btn-register {
+    background-color: #0F172A;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-register:hover {
+    background-color: #1E293B;
+    color: white;
+}
+
+/* --- Table Container --- */
+.table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* --- Table Headers --- */
+thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #94A3B8; /* Light gray text */
+    padding: 12px 16px;
+    border-bottom: 1px solid #F1F5F9;
+    letter-spacing: 0.05em;
+}
+
+/* --- Table Body --- */
+tbody tr {
+    transition: background-color 0.2s;
+}
+
+tbody tr:hover {
+    background-color: #F8FAFC;
+}
+
+tbody td {
+    padding: 16px;
+    border-bottom: 1px solid #F1F5F9;
+    vertical-align: middle;
+}
+
+/* --- Typography Helpers --- */
+.cell-stacked {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.4;
+}
+
+.primary-text {
+    font-weight: 600;
+    color: #0F172A; /* Dark slate */
+    font-size: 14px;
+}
+
+.sub-text {
+    font-size: 13px;
+    color: #64748B; /* Slate gray */
+}
+
+.simple-text {
+    font-size: 14px;
+    color: #334155;
+}
+
+/* --- Pregnancy LMP Badge --- */
+.stage-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stage-badge .week {
+    background-color: #FB7185; /* Pink/Rose background */
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.stage-badge .trim {
+    color: #E11D48; /* Darker pink text */
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* --- Risk Badges --- */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+}
+
+/* Yellow/Normal */
+.risk-normal {
+    background-color: #FEF3C7;
+    color: #D97706;
+}
+
+/* Red/High */
+.risk-high {
+    background-color: #FEE2E2;
+    color: #EF4444;
+}
+
+/* Green/Low */
+.risk-low {
+    background-color: #DCFCE7;
+    color: #16A34A;
+}
+
+.risk-medium {
+    background-color: #E2E8F0;
+    color: #475569;
+}
+
+/* --- Action Icons --- */
+.action-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.action-icons a {
+    text-decoration: none;
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.action-icons a:hover {
+    transform: scale(1.1);
+}
+
+/* Edit Icon (Blue-ish gray) */
+.action-icons a:first-child {
+    color: #64748B; 
+}
+
+/* Delete Icon (Red) */
+.delete-icon {
+    color: #EF4444 !important;
+}
+
+.sidebar {
+  /* 1. Make the sidebar fill the full viewport height */
+  height: 100vh; 
+  
+  /* 2. Turn on Flexbox */
+  display: flex;
+  
+  /* 3. Stack items vertically */
+  flex-direction: column;
+  
+  /* Styling for background (based on your image) */
+  background-color: #0d1b2a; 
+  color: white;
+}
+
+.logout-section {
+  /* THIS IS THE KEY FIX: */
+  /* margin-top: auto automatically pushes this element 
+     to the bottom of a flex container */
+  margin-top: auto; 
+  
+  /* Optional spacing for aesthetics */
+  padding-bottom: 20px; 
+}
+
